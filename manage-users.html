@@ -4,62 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="manage-users.css">
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        /* Additional CSS for improvements */
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .form-container {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 2.5rem !important;
+            margin: 2rem auto;
+        }
+        
+        .form-title {
+            color: #00d7bd;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .form-title i {
+            font-size: 1.5rem;
+        }
+        
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00d7bd;
+        }
+        
+        .input-icon input,
+        .input-icon select {
+            padding-left: 3rem !important;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem !important;
+                margin: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
         <header class="dashboard-header">
-            <h1>Manage Users</h1>
-            <div style="text-align:center; margin:2rem;">
-                <button onclick="window.location.href='user-list.html'" class="btn btn-primary" style="max-width:220px;width:100%;">Show All Users</button>
-                <div class="user-info">
-                    <button onclick="window.location.href='dashboard.html'" class="btn btn-secondary">Back to Dashboard</button>
+            <div class="header-content">
+                <h1><i class="ri-user-settings-line"></i> Manage Users</h1>
+                <div class="header-actions">
+                    <button onclick="window.location.href='user-list.html'" class="btn btn-primary">
+                        <span class="btn-icon">
+                            <i class="ri-list-check"></i>
+                            Show All Users
+                        </span>
+                    </button>
+                    <button onclick="window.location.href='dashboard.html'" class="btn btn-secondary">
+                        <span class="btn-icon">
+                            <i class="ri-arrow-left-line"></i>
+                            Dashboard
+                        </span>
+                    </button>
                 </div>
             </div>
         </header>
-        <main class="dashboard-main" style="display: flex; align-items: stretch; justify-content: center; min-height: 80vh; padding: 0;">
-            <div class="form-container" style="max-width: 900px; width: 100%; margin: 0; border-radius: 0; box-shadow: none; background: #fff; display: flex; flex-direction: column; justify-content: center;">
-                <h2 style="text-align:center; margin-bottom: 2rem;">Add User</h2>
-                <form id="addUserForm" style="width: 100%; max-width: 500px; margin: 0 auto;">
-                    <div class="form-group">
+        <main class="dashboard-main">
+            <div class="form-container">
+                <h2 class="form-title">
+                    <i class="ri-user-add-line"></i>
+                    Add New User
+                </h2>
+                <form id="addUserForm">
+                    <div class="form-group input-icon">
                         <label for="addUsername">Username</label>
-                        <input type="text" id="addUsername" name="addUsername" required>
+                        <i class="ri-user-line"></i>
+                        <input type="text" id="addUsername" name="addUsername" placeholder="Enter username" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon">
                         <label for="addPassword">Password</label>
-                        <input type="text" id="addPassword" name="addPassword" required>
+                        <i class="ri-lock-line"></i>
+                        <input type="password" id="addPassword" name="addPassword" placeholder="Enter password" required>
                     </div>
-                    <div class="form-group">
-                        <label for="addName">Name</label>
-                        <input type="text" id="addName" name="addName" required>
+                    <div class="form-group input-icon">
+                        <label for="addName">Full Name</label>
+                        <i class="ri-profile-line"></i>
+                        <input type="text" id="addName" name="addName" placeholder="Enter full name" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon">
                         <label for="addEmail">Email</label>
-                        <input type="email" id="addEmail" name="addEmail" required>
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="addEmail" name="addEmail" placeholder="Enter email address" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon">
                         <label for="addPhone">Phone</label>
-                        <input type="tel" id="addPhone" name="addPhone" required>
+                        <i class="ri-phone-line"></i>
+                        <input type="tel" id="addPhone" name="addPhone" placeholder="Enter phone number" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon">
                         <label for="addAddress">Address</label>
-                        <input type="text" id="addAddress" name="addAddress" required>
+                        <i class="ri-map-pin-line"></i>
+                        <input type="text" id="addAddress" name="addAddress" placeholder="Enter address" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon">
                         <label for="addPosition">Position</label>
-                        <input type="text" id="addPosition" name="addPosition" required>
+                        <i class="ri-briefcase-line"></i>
+                        <input type="text" id="addPosition" name="addPosition" placeholder="Enter position" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon">
                         <label for="addRole">Role</label>
+                        <i class="ri-shield-user-line"></i>
                         <select id="addRole" name="addRole" required>
+                            <option value="" disabled selected>Select role</option>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <div class="form-actions" style="justify-content:center;">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add User</button>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn-icon">
+                                <i class="ri-user-add-fill"></i>
+                                Add User
+                            </span>
+                        </button>
                     </div>
-                    <div id="addUserError" class="error-message" style="text-align:center;"></div>
+                    <div id="addUserError" class="error-message"></div>
                 </form>
             </div>
         </main>
@@ -90,7 +199,9 @@
                         Position: ${user.position || ''}
                     </td>
                     <td>
-                        <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">Delete</button>
+                        <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">
+                            <i class="ri-delete-bin-line"></i> Delete
+                        </button>
                     </td>
                 `;
                 userTableBody.appendChild(row);
@@ -122,18 +233,32 @@
             const address = document.getElementById('addAddress').value;
             const position = document.getElementById('addPosition').value;
             const role = document.getElementById('addRole').value;
+            
             if (!username || !password || !name || !email || !phone || !address || !position || !role) {
                 document.getElementById('addUserError').textContent = 'All fields are required';
                 return;
             }
+            
             if (!saveUser({ username, password, name, email, phone, address, position, role })) {
                 document.getElementById('addUserError').textContent = 'Username already exists';
                 return;
             }
+            
             document.getElementById('addUserForm').reset();
             document.getElementById('addUserError').textContent = '';
+            showSuccessMessage('User added successfully!');
             loadUserData();
         });
+
+        function showSuccessMessage(message) {
+            const errorDiv = document.getElementById('addUserError');
+            errorDiv.textContent = message;
+            errorDiv.style.color = '#00d7bd';
+            setTimeout(() => {
+                errorDiv.textContent = '';
+                errorDiv.style.color = '#ff4757';
+            }, 3000);
+        }
 
         document.addEventListener('DOMContentLoaded', loadUserData);
     </script>

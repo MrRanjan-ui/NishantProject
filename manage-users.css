@@ -102,7 +102,7 @@ body {
   position: absolute;
   left: 1rem;
   top: 50%;
-  transform: translateY(60%);
+  transform: translateY(-60%);
   transform: translateX(-30%);
   color: #00d7bd;
   font-size: 1.3rem;

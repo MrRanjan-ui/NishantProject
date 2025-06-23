@@ -17,9 +17,9 @@
                 </div>
             </div>
         </header>
-        <main class="dashboard-main">
-            <div class="form-container" style="max-width: 500px; margin: 2rem auto;">
-                <h2>Add User</h2>
+        <main class="dashboard-main" style="display: flex; align-items: center; justify-content: center; min-height: 70vh;">
+            <div class="form-container" style="max-width: 600px; width: 100%; margin: 2rem auto; box-shadow: 0 8px 32px rgba(0,0,0,0.07);">
+                <h2 style="text-align:center;">Add User</h2>
                 <form id="addUserForm">
                     <div class="form-group">
                         <label for="addUsername">Username</label>
@@ -56,13 +56,12 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Add User</button>
+                    <div class="form-actions" style="justify-content:center;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add User</button>
                     </div>
-                    <div id="addUserError" class="error-message"></div>
+                    <div id="addUserError" class="error-message" style="text-align:center;"></div>
                 </form>
             </div>
-            
         </main>
     </div>
     <script src="data.js"></script>

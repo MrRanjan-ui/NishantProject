@@ -101,13 +101,14 @@ body {
 .input-icon i {
   position: absolute;
   left: 1rem;
-  top: 50%;
-  transform: translateY(-60%);
-  transform: translateX(-30%);
+  top: 3rem;
+  /* transform: translateX(-30%); */
   color: #00d7bd;
   font-size: 1.3rem;
   pointer-events: none;
 }
+
+
 
 .input-icon input,
 .input-icon select {

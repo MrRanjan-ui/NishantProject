@@ -22,64 +22,102 @@
             gap: 1rem;
         }
         
-        .table-container {
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .user-card {
             background: white;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 2rem;
-            width: 100%;
-            overflow-x: auto;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
         }
         
-        .data-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.95rem;
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 215, 189, 0.15);
         }
         
-        .data-table thead th {
+        .user-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background-color: #00d7bd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            padding: 1rem;
-            text-align: left;
-            position: sticky;
-            top: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
         
-        .data-table th:first-child {
-            border-top-left-radius: 10px;
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #232b36;
+            margin: 0;
         }
         
-        .data-table th:last-child {
-            border-top-right-radius: 10px;
+        .user-username {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
         
-        .data-table tbody tr {
-            transition: all 0.2s ease;
+        .user-details {
+            margin: 1rem 0;
         }
         
-        .data-table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
         }
         
-        .data-table tbody tr:hover {
-            background-color: #e6f9f7;
-            transform: translateX(4px);
+        .detail-item i {
+            color: #00d7bd;
+            margin-right: 0.5rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
         }
         
-        .data-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #e0e0e0;
-            vertical-align: top;
+        .detail-label {
+            font-weight: 500;
+            color: #666;
+            min-width: 70px;
+        }
+        
+        .detail-value {
+            color: #232b36;
         }
         
         .role-badge {
             display: inline-block;
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
+            margin-top: 0.5rem;
         }
         
         .role-admin {
@@ -92,9 +130,13 @@
             color: #232b36;
         }
         
-        .table-actions {
+        .card-actions {
             display: flex;
+            justify-content: flex-end;
             gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
         }
         
         .btn-icon {
@@ -106,6 +148,7 @@
         .btn-small {
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
+            border-radius: 8px;
         }
         
         .btn-danger {
@@ -118,27 +161,37 @@
             background-color: #e84141;
         }
         
-        .table-title {
+        .page-title {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             color: #00d7bd;
             margin-bottom: 1.5rem;
             font-size: 1.5rem;
+            padding: 0 1rem;
         }
         
-        @media (max-width: 1024px) {
-            .table-container {
-                padding: 1rem;
-            }
-            
-            .data-table {
-                font-size: 0.85rem;
-            }
-            
-            .data-table td, .data-table th {
-                padding: 0.75rem;
-            }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #00d7bd;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            color: #999;
+            max-width: 400px;
+            margin: 0 auto;
         }
         
         @media (max-width: 768px) {
@@ -151,15 +204,15 @@
                 align-items: flex-start;
             }
             
-            .table-container {
-                margin: 1rem;
+            .cards-container {
+                grid-template-columns: 1fr;
                 padding: 0.5rem;
             }
-            
-            .data-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -180,28 +233,12 @@
             </div>
         </header>
         <main class="dashboard-main">
-            <div class="table-container">
-                <div class="table-title">
-                    <i class="ri-team-line"></i>
-                    <h2>All Registered Users</h2>
-                </div>
-                <table id="userTable" class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Address</th>
-                            <th>Position</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                        <!-- User data will be populated here -->
-                    </tbody>
-                </table>
+            <div class="page-title">
+                <i class="ri-team-line"></i>
+                <h2>All Registered Users</h2>
+            </div>
+            <div class="cards-container" id="usersContainer">
+                <!-- User cards will be populated here -->
             </div>
         </main>
     </div>
@@ -213,54 +250,79 @@
             window.location.href = "dashboard.html";
         }
 
+        function getInitials(name) {
+            if (!name) return '?';
+            return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        }
+
         function loadUserData() {
             const users = getUsers();
-            const userTableBody = document.getElementById('userTableBody');
-            userTableBody.innerHTML = '';
+            const usersContainer = document.getElementById('usersContainer');
+            usersContainer.innerHTML = '';
             
             if (users.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td colspan="8" style="text-align: center; padding: 2rem; color: #666;">
-                        <i class="ri-user-search-line" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>
-                        No users found
-                    </td>
+                usersContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="ri-user-search-line"></i>
+                        <h3>No users found</h3>
+                        <p>There are currently no users registered in the system.</p>
+                    </div>
                 `;
-                userTableBody.appendChild(row);
                 return;
             }
             
             users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="ri-user-line"></i>
-                            ${user.username}
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                card.innerHTML = `
+                    <div class="user-card-header">
+                        <div>
+                            <h3 class="user-name">${user.name || 'Unnamed User'}</h3>
+                            <div class="user-username">
+                                <i class="ri-user-line"></i>
+                                ${user.username}
+                            </div>
                         </div>
-                    </td>
-                    <td>${user.name || '-'}</td>
-                    <td>${user.email || '-'}</td>
-                    <td>${user.phone || '-'}</td>
-                    <td>${user.address || '-'}</td>
-                    <td>${user.position || '-'}</td>
-                    <td>
+                        <div class="user-avatar">${getInitials(user.name)}</div>
+                    </div>
+                    
+                    <div class="user-details">
+                        <div class="detail-item">
+                            <i class="ri-mail-line"></i>
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">${user.email || 'Not provided'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="ri-phone-line"></i>
+                            <span class="detail-label">Phone:</span>
+                            <span class="detail-value">${user.phone || 'Not provided'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="ri-map-pin-line"></i>
+                            <span class="detail-label">Address:</span>
+                            <span class="detail-value">${user.address || 'Not provided'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="ri-briefcase-line"></i>
+                            <span class="detail-label">Position:</span>
+                            <span class="detail-value">${user.position || 'Not specified'}</span>
+                        </div>
+                        
                         <span class="role-badge role-${user.role}">
                             ${user.role === 'admin' ? '<i class="ri-shield-star-line"></i> Admin' : '<i class="ri-user-line"></i> User'}
                         </span>
-                    </td>
-                    <td>
-                        <div class="table-actions">
-                            <button onclick="editUser('${user.username}')" class="btn btn-small btn-secondary">
-                                <i class="ri-edit-line"></i>
-                            </button>
-                            <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">
-                                <i class="ri-delete-bin-line"></i>
-                            </button>
-                        </div>
-                    </td>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button onclick="editUser('${user.username}')" class="btn btn-small btn-secondary">
+                            <i class="ri-edit-line"></i> Edit
+                        </button>
+                        <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">
+                            <i class="ri-delete-bin-line"></i> Delete
+                        </button>
+                    </div>
                 `;
-                userTableBody.appendChild(row);
+                usersContainer.appendChild(card);
             });
         }
 

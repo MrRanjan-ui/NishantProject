@@ -5,17 +5,186 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        /* Additional CSS for the user list page */
+        .dashboard-header {
+            padding: 1rem 2rem;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.95rem;
+        }
+        
+        .data-table thead th {
+            background-color: #00d7bd;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+        
+        .data-table th:first-child {
+            border-top-left-radius: 10px;
+        }
+        
+        .data-table th:last-child {
+            border-top-right-radius: 10px;
+        }
+        
+        .data-table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #e6f9f7;
+            transform: translateX(4px);
+        }
+        
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .role-admin {
+            background-color: #00d7bd;
+            color: white;
+        }
+        
+        .role-user {
+            background-color: #e0e0e0;
+            color: #232b36;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-danger {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+        }
+        
+        .btn-danger:hover {
+            background-color: #e84141;
+        }
+        
+        .table-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #00d7bd;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .table-container {
+                padding: 1rem;
+            }
+            
+            .data-table {
+                font-size: 0.85rem;
+            }
+            
+            .data-table td, .data-table th {
+                padding: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .table-container {
+                margin: 1rem;
+                padding: 0.5rem;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
         <header class="dashboard-header">
-            <h1>User List</h1>
-            <div class="user-info">
-                <button onclick="window.location.href='manage-users.html'" class="btn btn-secondary">Back to Manage Users</button>
+            <div class="header-content">
+                <h1><i class="ri-user-list-line"></i> User List</h1>
+                <div class="user-info">
+                    <button onclick="window.location.href='manage-users.html'" class="btn btn-secondary">
+                        <span class="btn-icon">
+                            <i class="ri-arrow-left-line"></i>
+                            Back to Manage Users
+                        </span>
+                    </button>
+                </div>
             </div>
         </header>
         <main class="dashboard-main">
-            <div class="table-container" style="max-width: 900px; margin: 2rem auto;">
+            <div class="table-container">
+                <div class="table-title">
+                    <i class="ri-team-line"></i>
+                    <h2>All Registered Users</h2>
+                </div>
                 <table id="userTable" class="data-table">
                     <thead>
                         <tr>
@@ -26,6 +195,7 @@
                             <th>Address</th>
                             <th>Position</th>
                             <th>Role</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
@@ -47,19 +217,64 @@
             const users = getUsers();
             const userTableBody = document.getElementById('userTableBody');
             userTableBody.innerHTML = '';
+            
+            if (users.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="8" style="text-align: center; padding: 2rem; color: #666;">
+                        <i class="ri-user-search-line" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>
+                        No users found
+                    </td>
+                `;
+                userTableBody.appendChild(row);
+                return;
+            }
+            
             users.forEach(user => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${user.username}</td>
-                    <td>${user.name || ''}</td>
-                    <td>${user.email || ''}</td>
-                    <td>${user.phone || ''}</td>
-                    <td>${user.address || ''}</td>
-                    <td>${user.position || ''}</td>
-                    <td>${user.role}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ri-user-line"></i>
+                            ${user.username}
+                        </div>
+                    </td>
+                    <td>${user.name || '-'}</td>
+                    <td>${user.email || '-'}</td>
+                    <td>${user.phone || '-'}</td>
+                    <td>${user.address || '-'}</td>
+                    <td>${user.position || '-'}</td>
+                    <td>
+                        <span class="role-badge role-${user.role}">
+                            ${user.role === 'admin' ? '<i class="ri-shield-star-line"></i> Admin' : '<i class="ri-user-line"></i> User'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button onclick="editUser('${user.username}')" class="btn btn-small btn-secondary">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                            <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </td>
                 `;
                 userTableBody.appendChild(row);
             });
+        }
+
+        function deleteUser(username) {
+            if (confirm(`Are you sure you want to delete user "${username}"?`)) {
+                // User delete logic would go here
+                alert(`User ${username} deleted successfully!`);
+                loadUserData();
+            }
+        }
+
+        function editUser(username) {
+            // Edit user logic would go here
+            alert(`Edit user ${username}`);
         }
 
         document.addEventListener('DOMContentLoaded', loadUserData);

@@ -1,4 +1,3 @@
-
 const users = [
   { username: "admin", password: "admin123", role: "admin" },
   { username: "user1", password: "user123", role: "user" },
@@ -25,6 +24,8 @@ function logout() {
   localStorage.removeItem("isLoggedIn")
   window.location.href = "index.html"
 }
+// Make logout globally available
+window.logout = logout
 
 function isLoggedIn() {
   return localStorage.getItem("isLoggedIn") === "true"

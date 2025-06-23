@@ -8,9 +8,41 @@
     <!-- Remix Icon CDN -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
-        /* Additional CSS for the user list page */
+        /* Improved CSS with better spacing, transitions and responsive design */
+        :root {
+            --primary-color: #00d7bd;
+            --primary-light: rgba(0, 215, 189, 0.1);
+            --text-dark: #232b36;
+            --text-medium: #666;
+            --text-light: #999;
+            --border-color: #e0e0e0;
+            --border-light: #f0f0f0;
+            --danger-color: #ff4757;
+            --danger-hover: #e84141;
+            --white: #ffffff;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 25px rgba(0, 215, 189, 0.15);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
         .dashboard-header {
-            padding: 1rem 2rem;
+            padding: 1.5rem 2rem;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .header-content {
@@ -20,64 +52,75 @@
             width: 100%;
             flex-wrap: wrap;
             gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-main {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
-            padding: 1rem;
             width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
         }
         
         .user-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
             padding: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid #e0e0e0;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .user-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 215, 189, 0.15);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
         }
         
         .user-card-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border-light);
         }
         
         .user-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-color: #00d7bd;
+            background-color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--white);
             font-weight: bold;
             font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-left: 1rem;
         }
         
         .user-name {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #232b36;
-            margin: 0;
+            color: var(--text-dark);
+            margin: 0 0 0.25rem 0;
         }
         
         .user-username {
             font-size: 0.9rem;
-            color: #666;
+            color: var(--text-medium);
             display: flex;
             align-items: center;
             gap: 0.3rem;
@@ -85,6 +128,7 @@
         
         .user-details {
             margin: 1rem 0;
+            flex-grow: 1;
         }
         
         .detail-item {
@@ -95,7 +139,7 @@
         }
         
         .detail-item i {
-            color: #00d7bd;
+            color: var(--primary-color);
             margin-right: 0.5rem;
             margin-top: 0.2rem;
             flex-shrink: 0;
@@ -103,100 +147,256 @@
         
         .detail-label {
             font-weight: 500;
-            color: #666;
+            color: var(--text-medium);
             min-width: 70px;
         }
         
         .detail-value {
-            color: #232b36;
+            color: var(--text-dark);
+            word-break: break-word;
         }
         
         .role-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+            gap: 0.3rem;
         }
         
         .role-admin {
-            background-color: #00d7bd;
-            color: white;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
         }
         
         .role-user {
-            background-color: #e0e0e0;
-            color: #232b36;
+            background-color: var(--border-light);
+            color: var(--text-medium);
         }
         
         .card-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 0.5rem;
+            gap: 0.75rem;
             margin-top: 1rem;
             padding-top: 1rem;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--border-light);
         }
         
-        .btn-icon {
-            display: flex;
+        .btn {
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
             gap: 0.5rem;
         }
         
         .btn-small {
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: #00c2ab;
+        }
+        
+        .btn-secondary {
+            background-color: var(--border-light);
+            color: var(--text-dark);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
         }
         
         .btn-danger {
-            background-color: #ff4757;
-            color: white;
-            border: none;
+            background-color: var(--danger-color);
+            color: var(--white);
         }
         
         .btn-danger:hover {
-            background-color: #e84141;
+            background-color: var(--danger-hover);
         }
         
         .page-title {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: #00d7bd;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
             font-size: 1.5rem;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         .empty-state {
             text-align: center;
             padding: 4rem 1rem;
             grid-column: 1 / -1;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
         
         .empty-state i {
             font-size: 3rem;
-            color: #00d7bd;
+            color: var(--primary-color);
             margin-bottom: 1rem;
         }
         
         .empty-state h3 {
-            color: #666;
+            color: var(--text-medium);
             margin-bottom: 0.5rem;
+            font-size: 1.25rem;
         }
         
         .empty-state p {
-            color: #999;
+            color: var(--text-light);
             max-width: 400px;
             margin: 0 auto;
+        }
+        
+        /* Improved Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            width: 100%;
+            max-width: 450px;
+            margin: 1rem;
+            padding: 2rem;
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.25rem;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-dark);
+            background: var(--border-light);
+        }
+        
+        .modal-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            width: 90%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 215, 189, 0.2);
+        }
+        
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            padding-right: 2.5rem;
+            transform: translateX(10px);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-light);
+        }
+        
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
         
         @media (max-width: 768px) {
             .dashboard-header {
                 padding: 1rem;
+            }
+            
+            .dashboard-main {
+                padding: 1.5rem 1rem;
             }
             
             .header-content {
@@ -206,7 +406,10 @@
             
             .cards-container {
                 grid-template-columns: 1fr;
-                padding: 0.5rem;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
             }
         }
         
@@ -215,148 +418,84 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
-        /* Edit User Modal Styles */
-        #editUserModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        
-        #editUserModal > div {
-            background: #fff;
-            border-radius: 12px;
-            max-width: 400px;
-            width: 90%;
-            margin: auto;
-            padding: 2rem;
-            position: relative;
-        }
-        
-        #editUserModal button.close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #888;
-            cursor: pointer;
-        }
-        
-        #editUserModal h3 {
-            color: #00d7bd;
-            margin-bottom: 1rem;
-        }
-        
-        #editUserModal .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        #editUserModal label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #333;
-        }
-        
-        #editUserModal input,
-        #editUserModal select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #333;
-        }
-        
-        #editUserModal button[type="submit"] {
-            margin-top: 1rem;
-        }
-        
-        #editUserModal .error-message {
-            color: #ff4757;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
-        <header class="dashboard-header">
-            <div class="header-content">
-                <h1><i class="ri-user-list-line"></i> User List</h1>
-                <div class="user-info">
-                    <button onclick="window.location.href='manage-users.html'" class="btn btn-secondary">
-                        <span class="btn-icon">
-                            <i class="ri-arrow-left-line"></i>
-                            Back to Manage Users
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </header>
+       <header class="dashboard-header">
+    <div class="header-content">
+        <div class="navbar-brand">
+            <i class="ri-user-list-line"></i>
+            <h1>User Management</h1>
+        </div>
+        <div class="navbar-actions">
+            <button onclick="window.location.href='manage-users.html'" class="btn btn-secondary">
+                <i class="ri-arrow-left-line"></i>
+                <span>Back</span>
+            </button>
+        </div>
+    </div>
+</header>
         <main class="dashboard-main">
-            <div class="page-title">
-                <i class="ri-team-line"></i>
-                <h2>All Registered Users</h2>
-            </div>
-            <div class="cards-container" id="usersContainer">
+            
+            <div class="cards-container" id="usersContainer">   
                 <!-- User cards will be populated here -->
             </div>
         </main>
     </div>
+    
     <!-- Edit User Modal -->
-    <div id="editUserModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.3); align-items:center; justify-content:center; z-index:9999;">
-        <div style="background:#fff; border-radius:12px; max-width:400px; width:90%; margin:auto; padding:2rem; position:relative;">
-            <button onclick="closeEditModal()" style="position:absolute; top:1rem; right:1rem; background:none; border:none; font-size:1.5rem; color:#888; cursor:pointer;">
+    <div id="editUserModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEditModal()">
                 <i class="ri-close-line"></i>
             </button>
-            <h3 style="color:#00d7bd; margin-bottom:1rem;">Edit User</h3>
+            <h3 class="modal-title">
+                <i class="ri-user-settings-line"></i>
+                Edit User
+            </h3>
             <form id="editUserForm">
                 <input type="hidden" id="editUsername" name="username">
                 <div class="form-group">
                     <label for="editName">Full Name</label>
-                    <input type="text" id="editName" name="name" required>
+                    <input type="text" id="editName" name="name" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="editEmail">Email</label>
-                    <input type="email" id="editEmail" name="email" required>
+                    <input type="email" id="editEmail" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="editPhone">Phone</label>
-                    <input type="text" id="editPhone" name="phone" required>
+                    <input type="text" id="editPhone" name="phone" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="editAddress">Address</label>
-                    <input type="text" id="editAddress" name="address" required>
+                    <input type="text" id="editAddress" name="address" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="editPosition">Position</label>
-                    <input type="text" id="editPosition" name="position" required>
+                    <input type="text" id="editPosition" name="position" class="form-control" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group ">
                     <label for="editRole">Role</label>
-                    <select id="editRole" name="role" required>
+                    <select id="editRole" name="role" class="form-control form-select" required>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-                <div style="margin-top:1.5rem; display:flex; gap:1rem; justify-content:flex-end;">
-                    <button type="button" onclick="closeEditModal()" class="btn btn-secondary btn-small">Cancel</button>
-                    <button type="submit" class="btn btn-primary btn-small">Save</button>
-                </div>
                 <div id="editUserError" class="error-message"></div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeEditModal()" class="btn btn-secondary">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ri-save-line"></i> Save Changes
+                    </button>
+                </div>
             </form>
         </div>
     </div>
+
     <script src="data.js"></script>
     <script>
         // Only allow admin
@@ -441,19 +580,19 @@
             });
         }
 
-        // Use the deleteUser from data.js and reload the list
         function deleteUserHandler(username) {
-            if (confirm(`Are you sure you want to delete user "${username}"?`)) {
-                deleteUser(username); // from data.js
+            if (confirm(`Are you sure you want to delete user "${username}"? This action cannot be undone.`)) {
+                deleteUser(username);
                 loadUserData();
+                showToast('User deleted successfully');
             }
         }
 
-        // Edit user: open modal, populate, and handle save
         function openEditUserModal(username) {
             const users = getUsers();
             const user = users.find(u => u.username === username);
             if (!user) return;
+            
             document.getElementById('editUsername').value = user.username;
             document.getElementById('editName').value = user.name || '';
             document.getElementById('editEmail').value = user.email || '';
@@ -462,7 +601,9 @@
             document.getElementById('editPosition').value = user.position || '';
             document.getElementById('editRole').value = user.role || 'user';
             document.getElementById('editUserError').textContent = '';
+            
             document.getElementById('editUserModal').style.display = 'flex';
+            document.getElementById('editName').focus();
         }
 
         function closeEditModal() {
@@ -478,28 +619,75 @@
             const address = document.getElementById('editAddress').value.trim();
             const position = document.getElementById('editPosition').value.trim();
             const role = document.getElementById('editRole').value;
+            
             if (!name || !email || !phone || !address || !position || !role) {
-                document.getElementById('editUserError').textContent = 'All fields are required';
+                document.getElementById('editUserError').innerHTML = '<i class="ri-error-warning-line"></i> All fields are required';
                 return;
             }
+            
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('editUserError').innerHTML = '<i class="ri-error-warning-line"></i> Please enter a valid email address';
+                return;
+            }
+            
             if (editUserInStorage(username, { name, email, phone, address, position, role })) {
                 closeEditModal();
                 loadUserData();
+                showToast('User updated successfully');
             } else {
-                document.getElementById('editUserError').textContent = 'Failed to update user';
+                document.getElementById('editUserError').innerHTML = '<i class="ri-error-warning-line"></i> Failed to update user';
             }
         });
 
-        // Helper to call editUser from data.js
         function editUserInStorage(username, updatedFields) {
             if (typeof window.editUser === "function") {
                 return window.editUser(username, updatedFields);
             }
-            // fallback if not global
             return typeof editUser === "function" ? editUser(username, updatedFields) : false;
         }
 
-        document.addEventListener('DOMContentLoaded', loadUserData);
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.backgroundColor = 'var(--primary-color)';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 20px';
+            toast.style.borderRadius = 'var(--radius-sm)';
+            toast.style.boxShadow = 'var(--shadow-md)';
+            toast.style.zIndex = '1000';
+            toast.style.display = 'flex';
+            toast.style.alignItems = 'center';
+            toast.style.gap = '8px';
+            toast.style.animation = 'fadeIn 0.3s ease-out';
+            toast.innerHTML = `<i class="ri-checkbox-circle-line"></i> ${message}`;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+            
+            // Add animation styles dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateY(0); }
+                    to { opacity: 0; transform: translateY(10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
     </script>
 </body>
-</html>
+</html> 

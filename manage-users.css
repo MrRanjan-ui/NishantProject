@@ -94,14 +94,11 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.input-icon {
-  position: relative;
-}
+
 
 .input-icon i {
   position: absolute;
-  left: 1rem;
-  top: 3rem;
+  /* left: 1rem; */
   /* transform: translateX(-30%); */
   color: #00d7bd;
   font-size: 1.3rem;

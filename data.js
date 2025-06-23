@@ -158,6 +158,19 @@ function deleteUser(username) {
   return true;
 }
 
+// Edit user by username
+function editUser(username, updatedFields) {
+  const users = getUsers();
+  const idx = users.findIndex(user => user.username === username);
+  if (idx === -1) return false;
+  users[idx] = { ...users[idx], ...updatedFields };
+  localStorage.setItem("userData", JSON.stringify(users));
+  return true;
+}
+
+// Make editUser globally available for user-list.html
+window.editUser = editUser;
+
 // Export data (modified to include users)
 function exportData() {
   const data = {
@@ -197,27 +210,3 @@ function importData(file) {
   })
 }
 
-  link.click()
-
-
-// Import data (modified to handle users)
-function importData(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      try {
-        const importedData = JSON.parse(e.target.result)
-        if (importedData.users && importedData.dashboardData) {
-          localStorage.setItem("userData", JSON.stringify(importedData.users))
-          localStorage.setItem("dashboardData", JSON.stringify(importedData.dashboardData))
-          resolve(true)
-        } else {
-          reject("Invalid data format")
-        }
-      } catch (error) {
-        reject("Error parsing JSON file")
-      }
-    }
-    reader.readAsText(file)
-  })
-}

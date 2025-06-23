@@ -215,6 +215,77 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* Edit User Modal Styles */
+        #editUserModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        #editUserModal > div {
+            background: #fff;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            margin: auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        #editUserModal button.close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+        }
+        
+        #editUserModal h3 {
+            color: #00d7bd;
+            margin-bottom: 1rem;
+        }
+        
+        #editUserModal .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        #editUserModal label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        #editUserModal input,
+        #editUserModal select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        #editUserModal button[type="submit"] {
+            margin-top: 1rem;
+        }
+        
+        #editUserModal .error-message {
+            color: #ff4757;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -241,6 +312,50 @@
                 <!-- User cards will be populated here -->
             </div>
         </main>
+    </div>
+    <!-- Edit User Modal -->
+    <div id="editUserModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.3); align-items:center; justify-content:center; z-index:9999;">
+        <div style="background:#fff; border-radius:12px; max-width:400px; width:90%; margin:auto; padding:2rem; position:relative;">
+            <button onclick="closeEditModal()" style="position:absolute; top:1rem; right:1rem; background:none; border:none; font-size:1.5rem; color:#888; cursor:pointer;">
+                <i class="ri-close-line"></i>
+            </button>
+            <h3 style="color:#00d7bd; margin-bottom:1rem;">Edit User</h3>
+            <form id="editUserForm">
+                <input type="hidden" id="editUsername" name="username">
+                <div class="form-group">
+                    <label for="editName">Full Name</label>
+                    <input type="text" id="editName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone</label>
+                    <input type="text" id="editPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAddress">Address</label>
+                    <input type="text" id="editAddress" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPosition">Position</label>
+                    <input type="text" id="editPosition" name="position" required>
+                </div>
+                <div class="form-group">
+                    <label for="editRole">Role</label>
+                    <select id="editRole" name="role" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div style="margin-top:1.5rem; display:flex; gap:1rem; justify-content:flex-end;">
+                    <button type="button" onclick="closeEditModal()" class="btn btn-secondary btn-small">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-small">Save</button>
+                </div>
+                <div id="editUserError" class="error-message"></div>
+            </form>
+        </div>
     </div>
     <script src="data.js"></script>
     <script>
@@ -314,10 +429,10 @@
                     </div>
                     
                     <div class="card-actions">
-                        <button onclick="editUser('${user.username}')" class="btn btn-small btn-secondary">
+                        <button onclick="openEditUserModal('${user.username}')" class="btn btn-small btn-secondary">
                             <i class="ri-edit-line"></i> Edit
                         </button>
-                        <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">
+                        <button onclick="deleteUserHandler('${user.username}')" class="btn btn-small btn-danger">
                             <i class="ri-delete-bin-line"></i> Delete
                         </button>
                     </div>
@@ -326,17 +441,62 @@
             });
         }
 
-        function deleteUser(username) {
+        // Use the deleteUser from data.js and reload the list
+        function deleteUserHandler(username) {
             if (confirm(`Are you sure you want to delete user "${username}"?`)) {
-                // User delete logic would go here
-                alert(`User ${username} deleted successfully!`);
+                deleteUser(username); // from data.js
                 loadUserData();
             }
         }
 
-        function editUser(username) {
-            // Edit user logic would go here
-            alert(`Edit user ${username}`);
+        // Edit user: open modal, populate, and handle save
+        function openEditUserModal(username) {
+            const users = getUsers();
+            const user = users.find(u => u.username === username);
+            if (!user) return;
+            document.getElementById('editUsername').value = user.username;
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editAddress').value = user.address || '';
+            document.getElementById('editPosition').value = user.position || '';
+            document.getElementById('editRole').value = user.role || 'user';
+            document.getElementById('editUserError').textContent = '';
+            document.getElementById('editUserModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        document.getElementById('editUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('editUsername').value;
+            const name = document.getElementById('editName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            const address = document.getElementById('editAddress').value.trim();
+            const position = document.getElementById('editPosition').value.trim();
+            const role = document.getElementById('editRole').value;
+            if (!name || !email || !phone || !address || !position || !role) {
+                document.getElementById('editUserError').textContent = 'All fields are required';
+                return;
+            }
+            if (editUserInStorage(username, { name, email, phone, address, position, role })) {
+                closeEditModal();
+                loadUserData();
+            } else {
+                document.getElementById('editUserError').textContent = 'Failed to update user';
+            }
+        });
+
+        // Helper to call editUser from data.js
+        function editUserInStorage(username, updatedFields) {
+            if (typeof window.editUser === "function") {
+                return window.editUser(username, updatedFields);
+            }
+            // fallback if not global
+            return typeof editUser === "function" ? editUser(username, updatedFields) : false;
         }
 
         document.addEventListener('DOMContentLoaded', loadUserData);

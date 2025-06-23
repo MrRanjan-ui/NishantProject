@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Data</title>
     <link rel="stylesheet" href="add-data.css">
 </head>
+
 <body>
     <div class="add-data-container">
         <div class="sidebar">
@@ -33,7 +35,8 @@
         <div class="form-container">
             <header class="form-header">
                 <h2>Add New Data</h2>
-                <button onclick="window.location.href='dashboard.html'" class="btn btn-secondary">Back to Dashboard</button>
+                <button onclick="window.location.href='dashboard.html'" class="btn btn-secondary">Back to
+                    Dashboard</button>
             </header>
 
 
@@ -45,10 +48,17 @@
                     <div class="form-group">
                         <label for="initiativeTitle">Initiative Title</label>
                         <input type="text" id="initiativeTitle" name="initiativeTitle" required>
+                        <div class="help-box">
+                            Enter a clear, concise title that summarizes the initiative (e.g., "Automated Testing Framework Implementation")
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="initiativeDescription">Initiative Description (what is it and why was it progressed - i.e. what is the business benefit?)</label>
+                        <label for="initiativeDescription">Initiative Description (what is it and why was it progressed
+                            - i.e. what is the business benefit?)</label>
                         <textarea id="initiativeDescription" name="initiativeDescription" rows="3" required></textarea>
+                        <div class="help-box">  
+                            Provide a detailed description of the initiative, including its purpose and expected business benefits (e.g., "This initiative aims to implement an automated testing framework to improve software quality and reduce manual testing efforts.")
+                        </div>
                     </div>
                     <div class="form-actions">
                         <button type="button" onclick="nextStep()" class="btn btn-primary">Next</button>
@@ -59,44 +69,124 @@
                     <h3>Step 2: CoE & Beyond Scope</h3>
                     <div class="form-group">
                         <label for="rightThingForCoE">1. We do the right thing for CoE</label>
-                        <input type="text" id="rightThingForCoE" name="rightThingForCoE" required>
+                        <input type="text" id="rightThingForCoE" name="rightThingForCoE">
                     </div>
                     <div class="form-group">
-                        <label for="beyondTraditionalScope">2. We go beyond the traditional scope of a development/test team</label>
-                        <input type="text" id="beyondTraditionalScope" name="beyondTraditionalScope" required>
+                        <label for="beyondTraditionalScope">2. We go beyond the traditional scope of a development/test
+                            team</label>
+                        <input type="text" id="beyondTraditionalScope" name="beyondTraditionalScope">
                     </div>
-                    <div class="form-actions">
+                    <!-- <div class="form-actions">
                         <button type="button" onclick="prevStep()" class="btn btn-secondary">Previous</button>
                         <button type="button" onclick="nextStep()" class="btn btn-primary">Next</button>
-                    </div>
-                </div>
-                <!-- Step 3: Advanced Understanding & Innovation -->
-                <div class="form-step" id="formStep3">
+                    </div> -->
                     <h3>Step 3: Advanced Understanding & Innovation</h3>
                     <div class="form-group">
-                        <label for="advancedUnderstanding">3. We have an advanced understanding of current and new technologies</label>
-                        <input type="text" id="advancedUnderstanding" name="advancedUnderstanding" required>
+                        <label for="advancedUnderstanding">3. We have an advanced understanding of current and new
+                            technologies</label>
+                        <input type="text" id="advancedUnderstanding" name="advancedUnderstanding">
                     </div>
                     <div class="form-group">
                         <label for="seekOpportunities">4. We seek opportunities to improve and innovate</label>
-                        <input type="text" id="seekOpportunities" name="seekOpportunities" required>
+                        <input type="text" id="seekOpportunities" name="seekOpportunities">
                     </div>
                     <div class="form-actions">
                         <button type="button" onclick="prevStep()" class="btn btn-secondary">Previous</button>
                         <button type="button" onclick="nextStep()" class="btn btn-primary">Review</button>
                     </div>
                 </div>
+                <!-- Step 3: Resources -->
+                <div class="form-step" id="formStep3">
+                    <h3>Step 3: Resources</h3>
 
+                    <div class="form-group">
+                        <label for="relatedProgramme">Related Programme</label>
+                        <input type="text" id="relatedProgramme" name="relatedProgramme">
+                        <div class="help-box">
+                            Enter the name of the related programme this initiative belongs to
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="relatedProject">Related Project</label>
+                        <input type="text" id="relatedProject" name="relatedProject">
+                        <div class="help-box">
+                            Enter the name of the related project (if applicable)
+                        </div> 
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teamLeadInitiative">Systems Dev & Test Team Leading Initiative</label>
+                        <input type="text" id="teamLeadInitiative" name="teamLeadInitiative">
+                        <div class="help-box">
+                            Name of the team lead or primary contact for this initiative
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fteResources">FTE: Dev Lead / Other Key Systems Dev Resource</label>
+                        <input type="text" id="fteResources" name="fteResources">
+                        <div class="help-box">
+                            List full-time employees involved in this initiative
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contractResources">Contract Resource Notable contribution</label>
+                        <input type="text" id="contractResources" name="contractResources">
+                        <div class="help-box">
+                            List any contract resources who made significant contributions
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fundingType">Funded programme (including Enhancements) / BAU Opex</label>
+                        <select id="fundingType" name="fundingType">
+                            <option value="">Select funding type</option>
+                            <option value="Funded Programme">Funded Programme</option>
+                            <option value="Enhancements">Enhancements</option>
+                            <option value="BAU Opex">BAU Opex</option>
+                        </select>
+                        <div class="help-box">
+                            Select the funding type for this initiative
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="awardNomination">Nominate for award?</label>
+                        <select id="awardNomination" name="awardNomination">
+                            <option value="">Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <div class="help-box">
+                            Indicate if this initiative should be considered for quarterly awards
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="awardCandidate">Indicate if candidate for quarterly award</label>
+                        <textarea id="awardCandidate" name="awardCandidate" rows="2"></textarea>
+                        <div class="help-box">
+                            Briefly explain why this initiative deserves award consideration
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" onclick="prevStep()" class="btn btn-secondary">Previous</button>
+                        <button type="button" onclick="nextStep()" class="btn btn-primary">Review</button>
+                    </div>
+                </div>
                 <!-- Step 4: Review -->
                 <div class="form-step" id="formStep4">
                     <h3>Step 4: Review</h3>
                     <div class="review-section">
                         <h4>Initiative</h4>
                         <div id="reviewInitiative"></div>
-                        
+
                         <h4>CoE & Scope</h4>
                         <div id="reviewCoE"></div>
-                        
+
                         <h4>Advanced & Innovation</h4>
                         <div id="reviewAdvanced"></div>
                     </div>
@@ -123,17 +213,17 @@
         function nextStep() {
             if (validateCurrentStep()) {
                 if (currentStep < totalSteps) {
-                    
+
                     document.querySelector(`#step${currentStep}`).classList.remove('active');
                     document.querySelector(`#step${currentStep}`).classList.add('completed');
                     document.querySelector(`#formStep${currentStep}`).classList.remove('active');
-                    
+
                     currentStep++;
-                    
-                    
+
+
                     document.querySelector(`#step${currentStep}`).classList.add('active');
                     document.querySelector(`#formStep${currentStep}`).classList.add('active');
-                    
+
                     if (currentStep === 4) {
                         populateReview();
                     }
@@ -143,13 +233,13 @@
 
         function prevStep() {
             if (currentStep > 1) {
-                
+
                 document.querySelector(`#step${currentStep}`).classList.remove('active');
                 document.querySelector(`#formStep${currentStep}`).classList.remove('active');
-                
+
                 currentStep--;
-                
-                
+
+
                 document.querySelector(`#step${currentStep}`).classList.remove('completed');
                 document.querySelector(`#step${currentStep}`).classList.add('active');
                 document.querySelector(`#formStep${currentStep}`).classList.add('active');
@@ -159,7 +249,7 @@
         function validateCurrentStep() {
             const currentFormStep = document.getElementById(`formStep${currentStep}`);
             const requiredFields = currentFormStep.querySelectorAll('[required]');
-            
+
             for (let field of requiredFields) {
                 if (!field.value.trim()) {
                     field.focus();
@@ -172,29 +262,29 @@
 
         function populateReview() {
             const formData = new FormData(document.getElementById('multiStepForm'));
-            
+
             document.getElementById('reviewInitiative').innerHTML = `
                 <p><strong>Title:</strong> ${formData.get('initiativeTitle')}</p>
                 <p><strong>Description:</strong> ${formData.get('initiativeDescription')}</p>
             `;
-            
+
             document.getElementById('reviewCoE').innerHTML = `
                 <p><strong>1. We do the right thing for CoE:</strong> ${formData.get('rightThingForCoE')}</p>
                 <p><strong>2. We go beyond the traditional scope:</strong> ${formData.get('beyondTraditionalScope')}</p>
             `;
-            
+
             document.getElementById('reviewAdvanced').innerHTML = `
                 <p><strong>3. Advanced understanding:</strong> ${formData.get('advancedUnderstanding')}</p>
                 <p><strong>4. Seek opportunities:</strong> ${formData.get('seekOpportunities')}</p>
             `;
         }
 
-        document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+        document.getElementById('multiStepForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const formData = new FormData(this);
             const currentUser = getCurrentUser();
-            
+
             const newData = {
                 id: Date.now(),
                 initiativeTitle: formData.get('initiativeTitle'),
@@ -206,18 +296,18 @@
                 createdBy: currentUser.username,
                 dateCreated: new Date().toISOString()
             };
-            
+
             saveData(newData);
             alert('Data saved successfully!');
             window.location.href = 'dashboard.html';
         });
 
-    
-        document.addEventListener('DOMContentLoaded', function() {
+
+        document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('#step1').classList.add('active');
             document.querySelector('#formStep1').classList.add('active');
         });
     </script>
 </body>
-</html>
 
+</html>

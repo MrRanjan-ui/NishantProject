@@ -194,11 +194,13 @@
             tableBody.innerHTML = '';
             
             filteredData.forEach(item => {
+                const desc = item.initiativeDescription || "";
+                const shortDesc = desc.substring(0, 50) + (desc.length > 50 ? '...' : '');
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.id}</td>
                     <td class="initiative-title">${item.initiativeTitle}</td>
-                    <td class="initiative-desc">${item.initiativeDescription.substring(0, 50)}${item.initiativeDescription.length > 50 ? '...' : ''}</td>
+                    <td class="initiative-desc">${shortDesc}</td>
                     <td>${item.rightThingForCoE}</td>
                     <td>${item.beyondTraditionalScope}</td>
                     <td>${item.advancedUnderstanding}</td>

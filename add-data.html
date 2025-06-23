@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Data</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="add-data-container">
+        <div class="sidebar">
+            <h3>Progress</h3>
+            <div class="progress-steps">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Initiative Details</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Impact & Timeline</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Resources</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <header class="form-header">
+                <h2>Add New Data</h2>
+                <button onclick="window.location.href='dashboard.html'" class="btn btn-secondary">Back to Dashboard</button>
+            </header>
+
+
+            <!-- yaha se steps start hote hai -->
+            <form id="multiStepForm">
+                <!-- Step 1: Initiative Title & Description -->
+                <div class="form-step active" id="formStep1">
+                    <h3>Step 1: Initiative Title & Description</h3>
+                    <div class="form-group">
+                        <label for="initiativeTitle">Initiative Title</label>
+                        <input type="text" id="initiativeTitle" name="initiativeTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="initiativeDescription">Initiative Description (what is it and why was it progressed - i.e. what is the business benefit?)</label>
+                        <textarea id="initiativeDescription" name="initiativeDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="nextStep()" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <!-- Step 2: CoE & Beyond Scope -->
+                <div class="form-step" id="formStep2">
+                    <h3>Step 2: CoE & Beyond Scope</h3>
+                    <div class="form-group">
+                        <label for="rightThingForCoE">1. We do the right thing for CoE</label>
+                        <input type="text" id="rightThingForCoE" name="rightThingForCoE" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="beyondTraditionalScope">2. We go beyond the traditional scope of a development/test team</label>
+                        <input type="text" id="beyondTraditionalScope" name="beyondTraditionalScope" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="prevStep()" class="btn btn-secondary">Previous</button>
+                        <button type="button" onclick="nextStep()" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+                <!-- Step 3: Advanced Understanding & Innovation -->
+                <div class="form-step" id="formStep3">
+                    <h3>Step 3: Advanced Understanding & Innovation</h3>
+                    <div class="form-group">
+                        <label for="advancedUnderstanding">3. We have an advanced understanding of current and new technologies</label>
+                        <input type="text" id="advancedUnderstanding" name="advancedUnderstanding" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seekOpportunities">4. We seek opportunities to improve and innovate</label>
+                        <input type="text" id="seekOpportunities" name="seekOpportunities" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="prevStep()" class="btn btn-secondary">Previous</button>
+                        <button type="button" onclick="nextStep()" class="btn btn-primary">Review</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review -->
+                <div class="form-step" id="formStep4">
+                    <h3>Step 4: Review</h3>
+                    <div class="review-section">
+                        <h4>Initiative</h4>
+                        <div id="reviewInitiative"></div>
+                        
+                        <h4>CoE & Scope</h4>
+                        <div id="reviewCoE"></div>
+                        
+                        <h4>Advanced & Innovation</h4>
+                        <div id="reviewAdvanced"></div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="prevStep()" class="btn btn-secondary">Previous</button>
+                        <button type="submit" class="btn btn-success">Submit Data</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="data.js"></script>
+    <script>
+        // Check ki user login hai ya nahi
+        if (!isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    
+                    document.querySelector(`#step${currentStep}`).classList.remove('active');
+                    document.querySelector(`#step${currentStep}`).classList.add('completed');
+                    document.querySelector(`#formStep${currentStep}`).classList.remove('active');
+                    
+                    currentStep++;
+                    
+                    
+                    document.querySelector(`#step${currentStep}`).classList.add('active');
+                    document.querySelector(`#formStep${currentStep}`).classList.add('active');
+                    
+                    if (currentStep === 4) {
+                        populateReview();
+                    }
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                
+                document.querySelector(`#step${currentStep}`).classList.remove('active');
+                document.querySelector(`#formStep${currentStep}`).classList.remove('active');
+                
+                currentStep--;
+                
+                
+                document.querySelector(`#step${currentStep}`).classList.remove('completed');
+                document.querySelector(`#step${currentStep}`).classList.add('active');
+                document.querySelector(`#formStep${currentStep}`).classList.add('active');
+            }
+        }
+
+        function validateCurrentStep() {
+            const currentFormStep = document.getElementById(`formStep${currentStep}`);
+            const requiredFields = currentFormStep.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    field.focus();
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function populateReview() {
+            const formData = new FormData(document.getElementById('multiStepForm'));
+            
+            document.getElementById('reviewInitiative').innerHTML = `
+                <p><strong>Title:</strong> ${formData.get('initiativeTitle')}</p>
+                <p><strong>Description:</strong> ${formData.get('initiativeDescription')}</p>
+            `;
+            
+            document.getElementById('reviewCoE').innerHTML = `
+                <p><strong>1. We do the right thing for CoE:</strong> ${formData.get('rightThingForCoE')}</p>
+                <p><strong>2. We go beyond the traditional scope:</strong> ${formData.get('beyondTraditionalScope')}</p>
+            `;
+            
+            document.getElementById('reviewAdvanced').innerHTML = `
+                <p><strong>3. Advanced understanding:</strong> ${formData.get('advancedUnderstanding')}</p>
+                <p><strong>4. Seek opportunities:</strong> ${formData.get('seekOpportunities')}</p>
+            `;
+        }
+
+        document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const currentUser = getCurrentUser();
+            
+            const newData = {
+                id: Date.now(),
+                initiativeTitle: formData.get('initiativeTitle'),
+                initiativeDescription: formData.get('initiativeDescription'),
+                rightThingForCoE: formData.get('rightThingForCoE'),
+                beyondTraditionalScope: formData.get('beyondTraditionalScope'),
+                advancedUnderstanding: formData.get('advancedUnderstanding'),
+                seekOpportunities: formData.get('seekOpportunities'),
+                createdBy: currentUser.username,
+                dateCreated: new Date().toISOString()
+            };
+            
+            saveData(newData);
+            alert('Data saved successfully!');
+            window.location.href = 'dashboard.html';
+        });
+
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#step1').classList.add('active');
+            document.querySelector('#formStep1').classList.add('active');
+        });
+    </script>
+</body>
+</html>
+

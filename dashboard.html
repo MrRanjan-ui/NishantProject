@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+
+            <div><i class="ri-user-line"></i><span id="userWelcome"></span></div>
+            <h1>Dashboard</h1>
+            <div class="user-info">
+                <button onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="dashboard-controls">
+                <button onclick="window.location.href='add-data.html'" class="btn btn-primary">
+                    Add New Initiative
+                </button>
+                <div id="adminControls" style="display: none;">
+                    <button onclick="window.location.href='manage-users.html'" class="btn btn-primary">
+                        Manage Users
+                    </button>
+                </div>
+                <button id="toggleInitiativesBtn" class="btn btn-primary" style="margin-left:1rem;">Show Initiatives</button>
+                <div class="search-box" id="searchBox" style="display:none;">
+                    <input type="text" id="searchInput" placeholder="Search initiatives..." onkeyup="filterTable()">
+                </div>
+            </div>
+
+            <div class="table-container" id="initiativesTableContainer" style="display:none;">
+                <table id="dataTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Initiative Title</th>
+                            <th>Initiative Description</th>
+                            <th>1. CoE</th>
+                            <th>2. Beyond Scope</th>
+                            <th>3. Advanced</th>
+                            <th>4. Innovate</th>
+                            <th>Created By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data will be displayed here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="popup-overlay" id="viewPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>Employee Details</h3>
+                <button class="popup-close" onclick="closePopup()">&times;</button>
+            </div>
+            <div class="popup-body" id="popupBody">
+                <!-- Content will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="data.js"></script>
+    <script>
+        // yaha ye check kar rhe ki user login hai ki nahi
+        if (!isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = getCurrentUser();
+            document.getElementById('userWelcome').textContent = `Welcome, ${currentUser.username} (${currentUser.role})`;
+
+            // Hide initiatives table and search box by default
+            document.getElementById('initiativesTableContainer').style.display = 'none';
+            document.getElementById('searchBox').style.display = 'none';
+
+            // Agar user admin hai to user management button dikhana
+            if (currentUser.role === 'admin') {
+                document.getElementById('adminControls').style.display = 'block';
+            }
+
+            // Toggle initiatives table on button click
+            document.getElementById('toggleInitiativesBtn').addEventListener('click', function() {
+                const tableContainer = document.getElementById('initiativesTableContainer');
+                const searchBox = document.getElementById('searchBox');
+                if (tableContainer.style.display === 'none') {
+                    loadTableData();
+                    tableContainer.style.display = '';
+                    searchBox.style.display = '';
+                    this.textContent = 'Hide Initiatives';
+                } else {
+                    tableContainer.style.display = 'none';
+                    searchBox.style.display = 'none';
+                    this.textContent = 'Show Initiatives';
+                }
+            });
+        });
+
+        function loadTableData() {
+            const currentUser = getCurrentUser();
+            const data = getData();
+            const tableBody = document.getElementById('tableBody');
+            
+            // Search functionality ke liye yaha filter hai 
+            let filteredData = data;
+            if (currentUser.role === 'user') {
+                filteredData = data.filter(item => item.createdBy === currentUser.username);
+            }
+            
+            tableBody.innerHTML = '';
+            
+            filteredData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.initiativeTitle}</td>
+                    <td>${item.initiativeDescription}</td>
+                    <td>${item.rightThingForCoE}</td>
+                    <td>${item.beyondTraditionalScope}</td>
+                    <td>${item.advancedUnderstanding}</td>
+                    <td>${item.seekOpportunities}</td>
+                    <td>${item.createdBy}</td>
+                    <td>
+                        <button onclick="viewItem(${item.id})" class="btn btn-small">View</button>
+                        <button onclick="deleteItem(${item.id})" class="btn btn-small btn-danger">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#tableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        function viewItem(id) {
+            const data = getData();
+            const item = data.find(d => d.id === id);
+            if (item) {
+                const popupBody = document.getElementById('popupBody');
+                popupBody.innerHTML = `
+                    <div class="popup-field">
+                        <strong>Initiative Title</strong>
+                        <span>${item.initiativeTitle}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>Description</strong>
+                        <span>${item.initiativeDescription}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>1. We do the right thing for CoE</strong>
+                        <span>${item.rightThingForCoE}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>2. We go beyond the traditional scope</strong>
+                        <span>${item.beyondTraditionalScope}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>3. Advanced understanding</strong>
+                        <span>${item.advancedUnderstanding}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>4. Seek opportunities</strong>
+                        <span>${item.seekOpportunities}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>Created By</strong>
+                        <span>${item.createdBy}</span>
+                    </div>
+                `;
+                document.getElementById('viewPopup').style.display = 'flex';
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('viewPopup').style.display = 'none';
+        }
+
+        // popup close karne ke liye logic hai yaha
+        document.getElementById('viewPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        function deleteItem(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                deleteData(id);
+                loadTableData();
+            }
+        }
+
+        // User management modal remove kar diya gaya hai, ab direct manage-users.html page open hoga
+    </script>
+</body>
+</html>
+                        <strong>Description</strong>
+                        <span>${item.initiativeDescription}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>1. We do the right thing for CoE</strong>
+                        <span>${item.rightThingForCoE}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>2. We go beyond the traditional scope</strong>
+                        <span>${item.beyondTraditionalScope}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>3. Advanced understanding</strong>
+                        <span>${item.advancedUnderstanding}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>4. Seek opportunities</strong>
+                        <span>${item.seekOpportunities}</span>
+                    </div>
+                    <div class="popup-field">
+                        <strong>Created By</strong>
+                        <span>${item.createdBy}</span>
+                    </div>
+                `;
+                document.getElementById('viewPopup').style.display = 'flex';
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('viewPopup').style.display = 'none';
+        }
+
+        // popup close karne ke liye logic hai yaha
+        document.getElementById('viewPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        function deleteItem(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                deleteData(id);
+                loadTableData();
+            }
+        }
+
+        function showUserManagement() {
+            // User management modal dikhane ka logic
+            const modal = document.getElementById('userManagementModal');
+            modal.style.display = 'block';
+
+            // Yaha user data load karne ka code hoga
+            loadUserData();
+        }
+
+        function loadUserData() {
+            const users = getUsers();
+            const userTableBody = document.getElementById('userTableBody');
+            userTableBody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.password || ''}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        <button onclick="deleteUser('${user.username}')" class="btn btn-small btn-danger">Delete</button>
+                    </td>
+                `;
+                userTableBody.appendChild(row);
+            });
+        }
+
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'block';
+            document.getElementById('addUserForm').reset();
+            document.getElementById('addUserError').textContent = '';
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+        }
+
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('addUsername').value.trim();
+            const password = document.getElementById('addPassword').value;
+            const role = document.getElementById('addRole').value;
+            if (!username || !password || !role) {
+                document.getElementById('addUserError').textContent = 'All fields are required';
+                return;
+            }
+            if (!saveUser({ username, password, role })) {
+                document.getElementById('addUserError').textContent = 'Username already exists';
+                return;
+            }
+            closeAddUserModal();
+            loadUserData();
+        });
+
+        function deleteUser(username) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                // User delete karne ka logic
+                removeUser(username); // Ye function user ko delete karega
+                loadUserData();
+            }
+        }
+
+        // User management modal close karne ke liye
+        window.onclick = function(event) {
+            const modal = document.getElementById('userManagementModal');
+            const addUserModal = document.getElementById('addUserModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            if (event.target == addUserModal) {
+                addUserModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

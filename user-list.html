@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>User List</h1>
+            <div class="user-info">
+                <button onclick="window.location.href='manage-users.html'" class="btn btn-secondary">Back to Manage Users</button>
+            </div>
+        </header>
+        <main class="dashboard-main">
+            <div class="table-container" style="max-width: 900px; margin: 2rem auto;">
+                <table id="userTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Position</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- User data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="data.js"></script>
+    <script>
+        // Only allow admin
+        const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+        if (!currentUser || currentUser.role !== "admin") {
+            window.location.href = "dashboard.html";
+        }
+
+        function loadUserData() {
+            const users = getUsers();
+            const userTableBody = document.getElementById('userTableBody');
+            userTableBody.innerHTML = '';
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.name || ''}</td>
+                    <td>${user.email || ''}</td>
+                    <td>${user.phone || ''}</td>
+                    <td>${user.address || ''}</td>
+                    <td>${user.position || ''}</td>
+                    <td>${user.role}</td>
+                `;
+                userTableBody.appendChild(row);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUserData);
+    </script>
+</body>
+</html>
